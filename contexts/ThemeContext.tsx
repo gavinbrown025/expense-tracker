@@ -2,13 +2,10 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ThemeValues = {
-  dark: "forest",
-  light: "emerald",
-} as const;
+const ThemeValues = { dark: "dagreen", light: "lagreen" } as const;
 
-type ThemeKey = keyof typeof ThemeValues; // "dark" | "light"
-type ThemeValue = (typeof ThemeValues)[ThemeKey]; // "forest" | "emerald"
+type ThemeKey = keyof typeof ThemeValues;
+type ThemeValue = (typeof ThemeValues)[ThemeKey];
 
 interface ThemeContextType {
   theme: ThemeKey;
@@ -20,10 +17,9 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeKey>("light");
-  const [mounted, setMounted] = useState(false);
 
+  // On mount, sync theme with localStorage or system preference
   useEffect(() => {
-    setMounted(true);
     const savedThemeValue = localStorage.getItem("theme") as ThemeValue;
     if (
       savedThemeValue === ThemeValues.dark ||
@@ -38,17 +34,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Update DOM and localStorage when theme changes
   useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("theme", ThemeValues[theme]);
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+    localStorage.setItem("theme", ThemeValues[theme]);
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
     document.documentElement.setAttribute("data-theme", ThemeValues[theme]);
-  }, [theme, mounted]);
+  }, [theme]);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
