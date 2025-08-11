@@ -3,16 +3,21 @@ import UIIcon from "@/components/UIIcon";
 
 type AuthButtonProps = {
   onClick?: () => void;
-  className?: string;
+  inClass?: string;
+  outClass?: string;
 };
 
-export default function AuthButton({ onClick, className = "" }: AuthButtonProps) {
+export default function AuthButton({
+  onClick,
+  inClass = "",
+  outClass = "",
+}: AuthButtonProps) {
   return (
     <>
       <SignedOut>
         <SignInButton>
           <button
-            className={`btn btn-primary w-full ${className}`}
+            className={`btn btn-primary flex items-center ${outClass}`}
             onClick={onClick}
           >
             <span>Sign In</span>
@@ -21,12 +26,12 @@ export default function AuthButton({ onClick, className = "" }: AuthButtonProps)
         </SignInButton>
       </SignedOut>
       <SignedIn>
-        <div className="flex items-center justify-center p-3 rounded-xl bg-gradient-to-r from-primary/50 to-secondary/50 backdrop-blur-sm border border-primary-200/30">
+        <div className={inClass}>
           <UserButton
             appearance={{
               elements: {
                 avatarBox:
-                  "size-8 hover:scale-110 transition-transform duration-200",
+                  "rounded-full size-8 hover:scale-110 transition-transform duration-200",
                 userButtonBox: "flex items-center justify-center",
               },
             }}

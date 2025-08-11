@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import NavBar from "@/components/NavBar";
 
@@ -24,6 +23,23 @@ export const metadata: Metadata = {
   // },
 };
 
+const appearance = {
+  cssLayerName: "clerk",
+  variables: {
+    colorBackground: "var(--color-neutral)",
+    colorPrimary: "var(--color-primary)",
+    colorForeground: "var(--color-neutral-content)",
+    colorPrimaryForeground: "var(--color-primary-content)",
+    colorText: "var(--color-neutral-content)",
+    colorTextSecondary: "var(--color-neutral-content)",
+    colorBorder: "var(--color-neutral-content)",
+    colorInput: "var(--color-neutral)",
+    colorInputBackground: "var(--color-neutral)",
+    colorInputText: "var(--color-neutral-content)",
+    colorInputForeground: "var(--color-neutral-content)",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,12 +49,20 @@ export default function RootLayout({
     <ThemeProvider>
       <ClerkProvider
         appearance={{
-          baseTheme: [dark, "simple"],
           cssLayerName: "clerk",
           variables: {
-            colorPrimary: "btn-primary",
-            colorText: "text-base-content",
-            colorBackground: "bg-base-300",
+            colorBackground: "var(--color-neutral)",
+            colorPrimary: "var(--color-primary)",
+            colorForeground: "var(--color-neutral-content)",
+            colorPrimaryForeground: "var(--color-primary-content)",
+            colorText: "var(--color-neutral-content)",
+            colorTextSecondary: "var(--color-neutral-content)",
+            colorBorder: "var(--color-neutral-content)",
+            colorInput: "var(--color-neutral)",
+            colorInputBackground: "var(--color-neutral)",
+            colorInputText: "var(--color-neutral-content)",
+            colorInputForeground: "var(--color-neutral-content)",
+            colorNeutral: "var(--color-base-content)",
           },
         }}
       >

@@ -1,6 +1,5 @@
 "use client";
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import MenuButton from "@/components/MenuButton";
@@ -60,13 +59,11 @@ export default function Navbar() {
           {/* Right Section */}
           <div className="flex items-center space-x-1 sm:space-x-2">
             <ThemeToggle />
-            <div className="hidden sm:block">
-              <AuthButton />
-            </div>
             <MenuButton
               onClick={toggleMobileMenu}
               mobileMenuOpen={isMobileMenuOpen}
             />
+            <AuthButton outClass="not-sm:hidden"/>
           </div>
         </div>
 
