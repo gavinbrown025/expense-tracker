@@ -6,10 +6,14 @@ import AuthButton from "./AuthButton";
 type MobileMenuProps = {
   open: boolean;
   links: { href: string; label: string; icon: string }[];
-  onClose: () => void;
+  closeMobileMenu: () => void;
 };
 
-export default function MobileMenu({ open, links, onClose }: MobileMenuProps) {
+export default function MobileMenu({
+  open,
+  links,
+  closeMobileMenu,
+}: MobileMenuProps) {
   const pathname = usePathname();
 
   return (
@@ -26,7 +30,7 @@ export default function MobileMenu({ open, links, onClose }: MobileMenuProps) {
               className={`btn btn-neutral ${
                 pathname === link.href ? "btn-active" : ""
               }`}
-              onClick={onClose}
+              onClick={closeMobileMenu}
             >
               <UIIcon iconName={link.icon} className="!text-lg" />
               <span>{link.label}</span>
@@ -34,7 +38,11 @@ export default function MobileMenu({ open, links, onClose }: MobileMenuProps) {
           </li>
         ))}
         <div className="pt-3 border-t border-secondary/50">
-          <AuthButton inClass="hidden" outClass="w-full" />
+          <AuthButton
+            inClass="hidden"
+            outClass="w-full"
+            onClick={closeMobileMenu}
+          />
         </div>
       </ul>
     </div>

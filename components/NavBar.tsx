@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import MenuButton from "@/components/MenuButton";
 import MobileMenu from "@/components/MobileMenu";
 import UIIcon from "@/components/UIIcon";
+import AuthButton from "@/components/AuthButton";
+
+import Link from "next/link";
 import { useState } from "react";
-import AuthButton from "./AuthButton";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,13 +32,13 @@ export default function Navbar() {
               className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group transition-all duration-300 hover:scale-105"
               onClick={closeMobileMenu}
             >
-              <div className="size-7 sm:size-8 md:size-10 rounded-sm sm:rounded-md bg-primary flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:rotate-3">
+              <div className="size-7 sm:size-8 md:size-10 rounded-sm sm:rounded-md gradient-primary flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:rotate-3">
                 <UIIcon
                   iconName="receipt_long"
                   className="!text-white !text-lg sm:!text-xl md:!text-2xl"
                 />
               </div>
-              <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold">
+              <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold gradient-text">
                 ExpenseTracker
               </h1>
             </Link>
@@ -50,6 +51,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="btn btn-neutral hover:btn-primary transition-all duration-200"
+                onClick={closeMobileMenu}
               >
                 {link.label}
               </Link>
@@ -71,7 +73,7 @@ export default function Navbar() {
         <MobileMenu
           open={isMobileMenuOpen}
           links={links}
-          onClose={closeMobileMenu}
+          closeMobileMenu={closeMobileMenu}
         />
       </div>
     </nav>

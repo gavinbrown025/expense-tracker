@@ -1,7 +1,11 @@
-import React from 'react'
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function HomePage() {
-  return (
-    <div>HomePage</div>
-  )
+import Guest from "@/components/Guest";
+
+export default async function HomePage() {
+  const user = await currentUser();
+  if (!user) {
+    return <Guest />;
+  }
+  return <div>HomePage</div>;
 }

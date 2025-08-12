@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ const appearance = {
     colorInputBackground: "var(--color-neutral)",
     colorInputText: "var(--color-neutral-content)",
     colorInputForeground: "var(--color-neutral-content)",
+    colorNeutral: "var(--color-base-content)",
   },
 };
 
@@ -47,33 +49,14 @@ export default function RootLayout({
 }>) {
   return (
     <ThemeProvider>
-      <ClerkProvider
-        appearance={{
-          cssLayerName: "clerk",
-          variables: {
-            colorBackground: "var(--color-neutral)",
-            colorPrimary: "var(--color-primary)",
-            colorForeground: "var(--color-neutral-content)",
-            colorPrimaryForeground: "var(--color-primary-content)",
-            colorText: "var(--color-neutral-content)",
-            colorTextSecondary: "var(--color-neutral-content)",
-            colorBorder: "var(--color-neutral-content)",
-            colorInput: "var(--color-neutral)",
-            colorInputBackground: "var(--color-neutral)",
-            colorInputText: "var(--color-neutral-content)",
-            colorInputForeground: "var(--color-neutral-content)",
-            colorNeutral: "var(--color-base-content)",
-          },
-        }}
-      >
+      <ClerkProvider appearance={appearance}>
         <html lang="en">
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`min-h-screen flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
           >
             <NavBar />
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {children}
-            </main>
+            <main className="flex-grow min-h-[80vh]">{children}</main>
+            <Footer />
           </body>
         </html>
       </ClerkProvider>

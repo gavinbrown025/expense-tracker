@@ -78,14 +78,32 @@
   --noise: 0;
 }
 
-
-
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  .container-x {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .container-y {
+    @apply py-12 sm:py-14 lg:py-16;
+  }
+  .gradient-base {
+    @apply bg-gradient-to-br from-base-100 via-neutral to-primary/20;
+  }
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary to-accent;
+  }
+  .gradient-line {
+    @apply bg-gradient-to-r from-primary to-accent;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
+  }
 }
 
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined", Arial, Helvetica, sans-serif;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
-
