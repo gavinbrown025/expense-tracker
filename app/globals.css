@@ -82,7 +82,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer base {
+@layer utilities {
   .container-x {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
@@ -90,7 +90,7 @@ body {
     @apply py-12 sm:py-14 lg:py-16;
   }
   .gradient-base {
-    @apply bg-gradient-to-br from-base-100 via-neutral to-primary/20;
+    @apply bg-gradient-to-br from-base-100/90 to-neutral/90;
   }
   .gradient-primary {
     @apply bg-gradient-to-br from-primary to-accent;
