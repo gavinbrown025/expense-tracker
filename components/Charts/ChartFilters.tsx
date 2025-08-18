@@ -3,10 +3,25 @@ import { useChartContext } from "@/contexts/ChartContext";
 
 import DateRangeSelector from "@/components/DateRangeSelector";
 import UIIcon from "@/components/UIIcon";
+import { useEffect } from "react";
 
 export default function ChartFilters() {
   const { chartType, setChartType, threshold, setThreshold } =
     useChartContext();
+
+  const getInitialThreshold = () => {
+    const stored = localStorage.getItem("threshold");
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {}
+    }
+    return 50;
+  };
+  useEffect(() => {
+    const initialThreshold = getInitialThreshold();
+    setThreshold(initialThreshold);
+  }, []);
 
   return (
     <div className="flex items-center gap-4">

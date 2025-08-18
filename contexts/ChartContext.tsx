@@ -35,15 +35,7 @@ export const useChartContext = () => {
 };
 
 export const ChartProvider = ({ children }: { children: ReactNode }) => {
-  const [threshold, setThreshold] = useState(() => {
-    const stored = localStorage.getItem("threshold");
-    if (stored) {
-      try {
-        return JSON.parse(stored);
-      } catch {}
-    }
-    return 50;
-  });
+  const [threshold, setThreshold] = useState(50);
   const [records, setRecords] = useState<Record[]>([]);
   const [chartType, setChartType] = useState<ChartType>("Date");
   const [startDate, setStartDate] = useState<Date>();
