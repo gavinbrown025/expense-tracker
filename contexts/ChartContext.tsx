@@ -20,6 +20,9 @@ interface ChartContextValue {
   endDate?: Date;
   setDateRange: (start?: Date, end?: Date, label?: string) => void;
   error: string | null;
+  refreshRecords: () => void;
+  threshold: number;
+  setThreshold: (value: number) => void;
 }
 
 const ChartContext = createContext<ChartContextValue | undefined>(undefined);
@@ -32,6 +35,15 @@ export const useChartContext = () => {
 };
 
 export const ChartProvider = ({ children }: { children: ReactNode }) => {
+  const [threshold, setThreshold] = useState(() => {
+    const stored = localStorage.getItem("threshold");
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {}
+    }
+    return 50;
+  });
   const [records, setRecords] = useState<Record[]>([]);
   const [chartType, setChartType] = useState<ChartType>("Date");
   const [startDate, setStartDate] = useState<Date>();
@@ -58,6 +70,8 @@ export const ChartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const refreshRecords = () => fetchRecords(startDate, endDate);
+
   const setDateRange = (start?: Date, end?: Date, label?: string) => {
     if (start && end) {
       localStorage.setItem(
@@ -72,13 +86,12 @@ export const ChartProvider = ({ children }: { children: ReactNode }) => {
     fetchRecords(start, end);
   };
 
-  useEffect(() => {
+  const setInitialDateRange = () => {
     const today = new Date();
     let end = today;
     let start = new Date(today);
     start.setDate(today.getDate() - 30);
     let label = "Last 30 days";
-
     const stored = localStorage.getItem("dateRange");
     if (stored) {
       try {
@@ -90,6 +103,15 @@ export const ChartProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch {}
     }
+    return { start, end, label };
+  };
+
+  useEffect(() => {
+    localStorage.setItem("threshold", JSON.stringify(threshold));
+  }, [threshold]);
+
+  useEffect(() => {
+    const { start, end, label } = setInitialDateRange();
     setDateRange(start, end, label);
   }, []);
 
@@ -103,6 +125,9 @@ export const ChartProvider = ({ children }: { children: ReactNode }) => {
         endDate,
         setDateRange,
         error,
+        refreshRecords,
+        threshold,
+        setThreshold,
       }}
     >
       {children}

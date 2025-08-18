@@ -8,9 +8,9 @@ import ChartHeading from "@/components/Charts/ChartHeading";
 import ChartFilters from "@/components/Charts/ChartFilters";
 
 const ActiveChart = () => {
-  const { records, chartType } = useChartContext();
+  const { records, chartType, threshold } = useChartContext();
   if (!records || records.length === 0) return <div>No records</div>;
-  if (chartType === "Date") return <DateChart records={records} />;
+  if (chartType === "Date") return <DateChart records={records} threshold={threshold} />;
   if (chartType === "Category") return <CategoryChart records={records} />;
   return <div className="error">Error</div>;
 };

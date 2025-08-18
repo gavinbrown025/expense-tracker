@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Record } from "@/types/Record";
+
 import {
   AreaChart,
   Area,
@@ -10,15 +11,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 import { format, compareAsc, isValid } from "date-fns";
 
-// Define the type for a record
-interface Record {
-  date: string; // ISO date string
-  amount: number; // Amount spent
-  category: string; // Expense category
-}
 
 const aggregateByDate = (records: Record[]) => {
   const dateMap = new Map<
@@ -46,7 +40,7 @@ const aggregateByDate = (records: Record[]) => {
       dateMap.set(dateKey, {
         total: record.amount,
         categories: [record.category],
-        originalDate: record.date,
+        originalDate: String(record.date),
       });
     }
   });
@@ -68,14 +62,11 @@ const formatChartDate = (value: string) => {
   return isValid(d) ? format(d, "MMM dd") : value;
 };
 
-const ExpenseChart = ({ records }: { records: Record[] }) => {
+const ExpenseChart = ({ records, threshold }: { records: Record[]; threshold: number }) => {
   const data = aggregateByDate(records);
 
-  // Set the split line of the chart
-  const [threshold, setThreshold] = useState(50);
-
   const gradientOffset = (threshold: number) => {
-    const dataMax = Math.max(...data.map((i) => i.amount));
+    const dataMax = Math.max(...data.map((i) => i.amount), 0);
     const dataMin = Math.min(...data.map((i) => i.amount));
     if (dataMax <= threshold) return 0;
     if (dataMin >= threshold) return 1;
@@ -106,7 +97,10 @@ const ExpenseChart = ({ records }: { records: Record[] }) => {
             dataKey="date"
             tickFormatter={formatChartDate}
           />
-          <YAxis tick={{ fill: "var(--color-neutral-content)", dx: -4 }} />
+          <YAxis
+            tick={{ fill: "var(--color-neutral-content)", dx: -4 }}
+            domain={[0, threshold]}
+          />
           <Tooltip
             wrapperStyle={{
               boxShadow: "var(--shadow-md)",

@@ -10,18 +10,21 @@ import {
   Tooltip,
 } from "recharts";
 import { Record } from "@/types/Record";
+import { DEFAULT_CATEGORIES } from "@/types/Categories";
 
 const aggregateByCategory = (records: Record[]) => {
-  const categoryMap = new Map<string, number>();
-
-  records.forEach((record) => {
-    const existing = categoryMap.get(record.category) || 0;
-    categoryMap.set(record.category, existing + record.amount);
+  const categoryTotals: { [key: string]: number } = {};
+  DEFAULT_CATEGORIES.forEach((cat) => {
+    categoryTotals[cat] = 0;
   });
-
-  return Array.from(categoryMap.entries()).map(([category, total]) => ({
+  records.forEach((record) => {
+    if (categoryTotals.hasOwnProperty(record.category)) {
+      categoryTotals[record.category] += record.amount;
+    }
+  });
+  return DEFAULT_CATEGORIES.map((category) => ({
     category,
-    total,
+    total: categoryTotals[category],
   }));
 };
 
@@ -29,16 +32,27 @@ const ExpenseSpiderChart = ({ records }: { records: Record[] }) => {
   const data = aggregateByCategory(records);
 
   return (
-    <div className="aspect-square">
+    <div className="aspect-4/3">
       <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data}>
+          <RadarChart
+            data={data}
+            outerRadius="90%"
+          >
           <PolarGrid stroke="var(--color-base-content)" opacity={0.2} />
           <PolarAngleAxis
             dataKey="category"
-            tick={{ fill: "var(--color-neutral-content)" }}
+            tick={{
+              fill: "var(--color-neutral-content)",
+              fontSize: "var(--text-xs)",
+            }}
           />
           <PolarRadiusAxis
-            tick={{ fill: "var(--color-neutral-content)" }}
+            tick={{
+              fill: "var(--color-neutral-content)",
+              dx: 4,
+              dy: 8,
+              fontSize: "var(--text-xs)",
+            }}
             angle={90}
             domain={[0, "auto"]}
           />

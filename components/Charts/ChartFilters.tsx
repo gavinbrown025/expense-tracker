@@ -5,7 +5,8 @@ import DateRangeSelector from "@/components/DateRangeSelector";
 import UIIcon from "@/components/UIIcon";
 
 export default function ChartFilters() {
-  const { chartType, setChartType } = useChartContext();
+  const { chartType, setChartType, threshold, setThreshold } =
+    useChartContext();
 
   return (
     <div className="flex items-center gap-4">
@@ -40,6 +41,17 @@ export default function ChartFilters() {
         </ul>
       </div>
 
+      {/* Threshold Selector */}
+      <label className="input input-xs w-min" htmlFor="threshold">
+        <div className="text-neutral-content/60">Target Spend</div>
+        <input
+          className="w-12 pl-2 border-l border-l-neutral-content/20"
+          id="threshold"
+          type="number"
+          value={threshold}
+          onChange={(e) => setThreshold(Number(e.target.value))}
+        />
+      </label>
       {/* DateRangeSelector */}
       <DateRangeSelector />
     </div>

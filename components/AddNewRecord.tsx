@@ -1,30 +1,25 @@
 "use client";
 
 import { useState, useRef } from "react";
+
+import { DEFAULT_CATEGORIES, Category } from "@/types/Categories";
 import addExpenseRecord from "@/app/actions/addExpenseRecord";
 import { suggestCategory } from "@/app/actions/suggestCategory";
+import { useChartContext } from "@/contexts/ChartContext";
 
 import UIIcon from "./UIIcon";
 
 export default function AddRecord() {
+  const { refreshRecords } = useChartContext();
+
   const formRef = useRef<HTMLFormElement>(null);
   const [amount, setAmount] = useState(50);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<Category | "">("");
   const [description, setDescription] = useState("");
   const [isCategorizingAI, setIsCategorizingAI] = useState(false);
-
-  const defaultCategories = [
-    "Food",
-    "Transport",
-    "Entertainment",
-    "Utilities",
-    "Health",
-    "Shopping",
-    "Other",
-  ];
 
   const clientAction = async (formData: FormData) => {
     setIsLoading(true);
@@ -48,6 +43,7 @@ export default function AddRecord() {
     }
 
     setIsLoading(false);
+    refreshRecords();
   };
 
   const handleAISuggestCategory = async () => {
@@ -65,7 +61,7 @@ export default function AddRecord() {
         setAlertType("error");
         setAlertMessage(`AI Suggestion: ${result.error}`);
       } else {
-        setCategory(result.category);
+        setCategory(result.category as Category);
         setAlertType("success");
         setAlertMessage(`AI Suggested Category ${result.category}`);
       }
@@ -172,10 +168,12 @@ export default function AddRecord() {
                 value={category}
                 required
                 className="select validator mt-2 w-full"
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategory(e.target.value as Category)}
               >
-                <option disabled={true} value=''>Pick a category</option>
-                {defaultCategories.map((cat) => (
+                <option disabled={true} value="">
+                  Pick a category
+                </option>
+                {DEFAULT_CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
                   </option>
@@ -245,4 +243,4 @@ export default function AddRecord() {
       </div>
     </div>
   );
-};
+}
