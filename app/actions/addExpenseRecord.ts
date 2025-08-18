@@ -76,4 +76,4 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
   }
 }
 
-export default addExpenseRecord
+export default addExpenseRecord;

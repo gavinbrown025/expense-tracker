@@ -1,8 +1,11 @@
 import { currentUser } from "@clerk/nextjs/server";
+import { ChartProvider } from "@/contexts/ChartContext";
 
 import Guest from "@/components/Guest";
 import WelcomeCard from "@/components/WelcomeCard";
 import AddNewRecord from "@/components/AddNewRecord";
+import RecordChart from "@/components/Charts/RecordChart";
+
 
 export default async function HomePage() {
   const user = await currentUser();
@@ -12,11 +15,17 @@ export default async function HomePage() {
   return (
     <div className="bg-base-100 min-h-screen transition-colors duration-300">
       <div className="container-x container-y">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <div className="space-y-4 sm:space-y-6">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+          <div className="space-y-6">
             <WelcomeCard user={user} />
+            <AddNewRecord />
           </div>
-          <AddNewRecord />
+          <div className="space-y-6">
+            <ChartProvider>
+              <RecordChart />
+            </ChartProvider>
+            <div className="card bg-neutral">other</div>
+          </div>
         </div>
       </div>
     </div>

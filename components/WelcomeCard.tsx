@@ -4,7 +4,7 @@ import type { User } from '@clerk/nextjs/server';
 
 export default function WelcomeCard({ user }: { user: User }) {
   return (
-    <div className="card bg-neutral shadow-xl sm:card-lg lg:card-xl">
+    <div className="card bg-neutral shadow-xl sm:card-lg">
       <div className="card-body">
         <div className="card-title mb-2">
           <figure className="relative mr-2">

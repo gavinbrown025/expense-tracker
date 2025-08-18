@@ -1,11 +1,12 @@
 "use client";
-import { useState, useRef } from "react";
 
+import { useState, useRef } from "react";
 import addExpenseRecord from "@/app/actions/addExpenseRecord";
 import { suggestCategory } from "@/app/actions/suggestCategory";
+
 import UIIcon from "./UIIcon";
 
-const AddRecord = () => {
+export default function AddRecord() {
   const formRef = useRef<HTMLFormElement>(null);
   const [amount, setAmount] = useState(50);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -77,10 +78,10 @@ const AddRecord = () => {
   };
 
   return (
-    <div className="card bg-neutral shadow-xl sm:card-lg lg:card-xl">
+    <div className="card bg-neutral shadow-xl sm:card-lg">
       <div className="card-body">
         <div className="flex items-center gap-4 mb-2">
-          <div className="size-12 grid place-items-center gradient-primary sm:size-12 rounded-full border border-primary">
+          <div className="btn btn-primary gradient-primary size-10 sm:size-12 rounded-full border-0">
             <UIIcon iconName="add_card" className="!text-2xl" />
           </div>
           <div className="">
@@ -97,7 +98,7 @@ const AddRecord = () => {
             clientAction(formData);
           }}
         >
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 mb-8">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4 mb-8">
             <div>
               <label htmlFor="text" className="text-sm font-semibold">
                 Expense description
@@ -245,5 +246,3 @@ const AddRecord = () => {
     </div>
   );
 };
-
-export default AddRecord;
