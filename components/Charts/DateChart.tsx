@@ -1,6 +1,7 @@
 "use client";
 
 import { Record } from "@/types/Record";
+import { useChartContext } from "@/contexts/ChartContext";
 
 import {
   AreaChart,
@@ -62,7 +63,10 @@ const formatChartDate = (value: string) => {
   return isValid(d) ? format(d, "MMM dd") : value;
 };
 
-const ExpenseChart = ({ records, threshold }: { records: Record[]; threshold: number }) => {
+
+const ExpenseChart = ({ records }: { records: Record[] }) => {
+  const { threshold } = useChartContext();
+  // const threshold = filters.threshold;
   const data = aggregateByDate(records);
 
   const gradientOffset = (threshold: number) => {

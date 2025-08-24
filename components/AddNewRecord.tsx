@@ -11,7 +11,6 @@ import UIIcon from "./UIIcon";
 
 export default function AddRecord() {
   const { refreshRecords } = useChartContext();
-
   const formRef = useRef<HTMLFormElement>(null);
   const [amount, setAmount] = useState(50);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -130,7 +129,7 @@ export default function AddRecord() {
                       iconName="diamond_shine"
                       className="swap-off !text-base"
                     />
-                    <span className="size-3/4 swap-on loading loading-spinner"></span>
+                    <span className="size-3/4 swap-on loading loading-spinner" />
                   </div>
                 </button>
               </div>
@@ -154,6 +153,10 @@ export default function AddRecord() {
                   id="date"
                   required
                   onFocus={(e) => e.target.showPicker()}
+                />
+                <UIIcon
+                  iconName="calendar_today"
+                  className="pointer-events-none !text-sm"
                 />
               </div>
             </div>

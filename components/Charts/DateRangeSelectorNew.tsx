@@ -57,36 +57,41 @@ const presets: Preset[] = [
 ];
 
 const DateRangeSelector = () => {
-  const { startDate, endDate, setDateRange } = useChartContext();
-  const [selectedPreset, setSelectedPreset] = useState<Preset | null>(
-    presets[1]
-  );
+  const { filters, setFilters } = useChartContext();
   const today = new Date();
+  // Set initial selectedPreset based on filters.label
+  const initialPreset = filters.label
+    ? presets.find((p) => p.label === filters.label) || null
+    : presets[1];
+  const [selectedPreset, setSelectedPreset] = useState<Preset | null>(initialPreset);
 
   useEffect(() => {
-    const stored = localStorage.getItem("dateRange");
-    if (stored) {
-      const { label } = JSON.parse(stored);
-      const preset = presets.find((p) => p.label === label);
-      if (preset) {
-        setSelectedPreset(preset);
-      } else {
-        setSelectedPreset(null);
-      }
+    // Update selectedPreset if filters.label changes
+    if (filters.label) {
+      const preset = presets.find((p) => p.label === filters.label);
+      setSelectedPreset(preset || null);
     }
-  }, []);
+  }, [filters.label]);
 
   const handlePresetSelect = (preset: Preset) => {
     setSelectedPreset(preset);
     const { start, end } = preset.getRange(today);
-    setDateRange(start, end, preset.label);
+    setFilters({ startDate: start, endDate: end, label: preset.label });
+    localStorage.setItem(
+      "dateRange",
+      JSON.stringify({ label: preset.label, start: start.toISOString(), end: end.toISOString() })
+    );
   };
 
   const handleCustomChange = (start: string, end: string) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     setSelectedPreset(null);
-    setDateRange(startDate, endDate, "Custom");
+    setFilters({ startDate, endDate, label: "Custom" });
+    localStorage.setItem(
+      "dateRange",
+      JSON.stringify({ label: "Custom", start: startDate.toISOString(), end: endDate.toISOString() })
+    );
   };
 
   return (
@@ -129,12 +134,12 @@ const DateRangeSelector = () => {
           <input
             className="pl-2 border-l border-l-neutral-content/20"
             type="date"
-            value={startDate ? format(startDate, "yyyy-MM-dd") : ""}
-            max={endDate ? format(endDate, "yyyy-MM-dd") : ""}
+            value={filters.startDate ? format(filters.startDate, "yyyy-MM-dd") : ""}
+            max={filters.endDate ? format(filters.endDate, "yyyy-MM-dd") : ""}
             onChange={(e) =>
               handleCustomChange(
                 e.target.value,
-                endDate ? format(endDate, "yyyy-MM-dd") : ""
+                filters.endDate ? format(filters.endDate, "yyyy-MM-dd") : ""
               )
             }
           />
@@ -146,11 +151,11 @@ const DateRangeSelector = () => {
           <input
             className="pl-2 border-l border-l-neutral-content/20"
             type="date"
-            value={endDate ? format(endDate, "yyyy-MM-dd") : ""}
-            min={startDate ? format(startDate, "yyyy-MM-dd") : ""}
+            value={filters.endDate ? format(filters.endDate, "yyyy-MM-dd") : ""}
+            min={filters.startDate ? format(filters.startDate, "yyyy-MM-dd") : ""}
             onChange={(e) =>
               handleCustomChange(
-                startDate ? format(startDate, "yyyy-MM-dd") : "",
+                filters.startDate ? format(filters.startDate, "yyyy-MM-dd") : "",
                 e.target.value
               )
             }

@@ -1,5 +1,6 @@
 import React from "react";
 import UIIcon from "@/components/UIIcon";
+import ChartSelector from "./ChartSelector";
 
 export default function ChartHeading() {
   return (
@@ -11,6 +12,8 @@ export default function ChartHeading() {
         <h2 className="card-title text-xl md:text-2xl">Expense Chart</h2>
         <p>Analyze and set your spending goals</p>
       </div>
+
+      <ChartSelector />
     </div>
   );
 }

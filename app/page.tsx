@@ -15,7 +15,7 @@ export default async function HomePage() {
     <div className="bg-base-100 min-h-screen transition-colors duration-300">
       <div className="container-x container-y">
         <ChartProvider>
-          <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+          <div className="grid gap-4 lg:grid-cols-2 md:gap-6">
             <div className="space-y-6">
               <WelcomeCard user={user} />
               <AddNewRecord />
