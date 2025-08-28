@@ -4,8 +4,9 @@ import { useChartContext } from "@/contexts/ChartContext";
 
 import DateChart from "@/components/Charts/DateChart";
 import CategoryChart from "@/components/Charts/CategoryChart";
-import ChartHeading from "@/components/Charts/ChartHeading";
+import CardHeading from "@/components/CardHeading";
 import ChartFilters from "@/components/Charts/ChartFilters";
+import ChartSelector from "./ChartSelector";
 
 const ActiveChart = () => {
   const { isInitialLoad, error, records, chartType } = useChartContext();
@@ -33,9 +34,15 @@ const ActiveChart = () => {
 
 const RecordChart = () => {
   return (
-    <div className="card sm:card-lg bg-neutral">
+    <div className="card @container/card card-md @lg/card:card-lg bg-neutral">
       <div className="card-body">
-        <ChartHeading />
+        <CardHeading
+          iconName="savings"
+          title="Expense Chart"
+          description="Analyze and set your spending goals"
+        >
+          <ChartSelector />
+        </CardHeading>
         <ChartFilters />
         <ActiveChart />
       </div>

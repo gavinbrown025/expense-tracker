@@ -5,6 +5,7 @@ import Guest from "@/components/Guest";
 import WelcomeCard from "@/components/WelcomeCard";
 import AddNewRecord from "@/components/AddNewRecord";
 import RecordChart from "@/components/Charts/RecordChart";
+import ExpenseStatsCard from "@/components/Stats/ExpenseStatsCard";
 
 export default async function HomePage() {
   const user = await currentUser();
@@ -22,7 +23,7 @@ export default async function HomePage() {
             </div>
             <div className="space-y-6">
               <RecordChart />
-              <div className="card bg-neutral">other</div>
+              <ExpenseStatsCard />
             </div>
           </div>
         </ChartProvider>

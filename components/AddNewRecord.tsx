@@ -8,6 +8,7 @@ import { suggestCategory } from "@/app/actions/suggestCategory";
 import { useChartContext } from "@/contexts/ChartContext";
 
 import UIIcon from "./UIIcon";
+import CardHeading from "./CardHeading";
 
 export default function AddRecord() {
   const { refreshRecords } = useChartContext();
@@ -73,27 +74,22 @@ export default function AddRecord() {
   };
 
   return (
-    <div className="card bg-neutral shadow-xl sm:card-lg">
+    <div className="card @container/card card-md @lg/card:card-lg bg-neutral shadow-xl">
       <div className="card-body">
-        <div className="flex items-center gap-4 mb-2">
-          <div className="btn btn-primary gradient-primary size-10 sm:size-12 rounded-full border-0">
-            <UIIcon iconName="add_card" className="!text-2xl" />
-          </div>
-          <div className="">
-            <h2 className="card-title text-xl md:text-2xl">Add New Expense</h2>
-            <p>Track your spending with AI assistance</p>
-          </div>
-        </div>
+        <CardHeading
+          iconName="add_card"
+          title="Add New Expense"
+          description="Track your spending with AI assistance"
+        />
         <form
           ref={formRef}
-          className=""
           onSubmit={(e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             clientAction(formData);
           }}
         >
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4 mb-8">
+          <div className="grid grid-cols-1 @lg/card:grid-cols-2 gap-4 mb-8">
             <div>
               <label htmlFor="text" className="text-sm font-semibold">
                 Expense description
@@ -116,7 +112,7 @@ export default function AddRecord() {
                   onClick={handleAISuggestCategory}
                   className={`btn p-1 h-3/4 aspect-square ${
                     isCategorizingAI || !description.trim()
-                      ? "gradient-base"
+                      ? "gradient-base-100"
                       : "gradient-primary hover:bg-gradient-to-tl"
                   }`}
                 >
@@ -217,7 +213,7 @@ export default function AddRecord() {
             disabled={isLoading}
             className={`btn btn-primary w-full shadow-lg transition-all duration-200 ${
               isLoading
-                ? "gradient-base border-neutral"
+                ? "gradient-base-100 border-neutral"
                 : "gradient-primary hover:bg-gradient-to-tl"
             }`}
           >

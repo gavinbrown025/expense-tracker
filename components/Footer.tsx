@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden gradient-base border-t border-neutral/50">
+    <footer className="relative overflow-hidden gradient-base-100 border-t border-neutral/50">
       {/* Gradient accent line */}
       <div className="absolute top-0 left-0 w-full h-1 gradient-line"></div>
 

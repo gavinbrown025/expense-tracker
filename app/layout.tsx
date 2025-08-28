@@ -52,10 +52,10 @@ export default function RootLayout({
       <ClerkProvider appearance={appearance}>
         <html lang="en">
           <body
-            className={`min-h-screen flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
             <NavBar />
-            <main className="flex-grow min-h-[80vh]">{children}</main>
+            <main className="min-h-[80vh]">{children}</main>
             <Footer />
           </body>
         </html>

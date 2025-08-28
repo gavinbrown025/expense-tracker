@@ -93,18 +93,27 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   .container-y {
     @apply py-12 sm:py-14 lg:py-16;
   }
-  .gradient-base {
-    @apply bg-gradient-to-br from-base-100/90 to-neutral/90;
-  }
-  .gradient-primary {
-    @apply bg-gradient-to-br from-primary to-accent;
-  }
   .gradient-line {
     @apply bg-gradient-to-r from-primary to-accent;
   }
   .gradient-text {
     @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
   }
+}
+
+@utility gradient-* {
+  --n: --value(--color- *);
+  --op: calc(--modifier(integer) * 1%);
+
+  --to: color-mix(in oklch, var(--n), var(--color-neutral) 50%);
+  --from-a: --alpha(var(--n) / var(--op, 100%));
+  --to-a: --alpha(var(--to) / var(--op, 100%));
+
+  background-image: linear-gradient(
+    to bottom right,
+    var(--from-a),
+    var(--to-a)
+  );
 }
 
 .material-symbols-outlined {
