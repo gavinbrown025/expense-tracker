@@ -1,16 +1,20 @@
 "use client";
 
 import { useChartContext } from "@/contexts/ChartContext";
+import { ExpenseStatsProps } from "@/types/Chart";
 
 import DateChart from "@/components/Charts/DateChart";
 import CategoryChart from "@/components/Charts/CategoryChart";
-import CardHeading from "@/components/CardHeading";
 import ChartFilters from "@/components/Charts/ChartFilters";
-import ChartSelector from "./ChartSelector";
+import ChartSelector from "@/components/Charts/ChartSelector";
+import Card from "@/components/Card";
+
+import ExpenseStats from "@/components/Stats/ExpenseStats";
+import ExpenseError from "@/components/Stats/ExpenseStatsError";
 
 const ActiveChart = () => {
-  const { isInitialLoad, error, records, chartType } = useChartContext();
-  if (error) return <div className="error">{error}</div>;
+  const { isInitialLoad, recordsError, records, chartType } = useChartContext();
+  if (recordsError) return <div className="error">{recordsError}</div>;
   if (isInitialLoad)
     return (
       <div className="skeleton opacity-50 grid place-items-center w-full aspect-4/3">
@@ -32,21 +36,34 @@ const ActiveChart = () => {
   return <div className="error">Error</div>;
 };
 
+const ExpenseStatsContainer = () => {
+  const { stats, statsError, isInitialLoad } = useChartContext();
+  if (statsError) return <ExpenseError />;
+  if (isInitialLoad)
+    return (
+      <div className="skeleton opacity-50 grid place-items-center w-full h-32">
+        <div>
+          <span className="loading loading-bars loading-xl mr-4" />
+          Loading
+        </div>
+      </div>
+    );
+
+  return <ExpenseStats {...stats as ExpenseStatsProps} />;
+};
+
 const RecordChart = () => {
   return (
-    <div className="card @container/card card-md @lg/card:card-lg bg-neutral">
-      <div className="card-body">
-        <CardHeading
-          iconName="savings"
-          title="Expense Chart"
-          description="Analyze and set your spending goals"
-        >
-          <ChartSelector />
-        </CardHeading>
-        <ChartFilters />
-        <ActiveChart />
-      </div>
-    </div>
+    <Card
+      iconName="savings"
+      title="Expense Chart"
+      desc="Analyze and set your spending goals"
+      headingChildren={<ChartSelector />}
+    >
+      <ChartFilters />
+      <ExpenseStatsContainer />
+      <ActiveChart />
+    </Card>
   );
 };
 

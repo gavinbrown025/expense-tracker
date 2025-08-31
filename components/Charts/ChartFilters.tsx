@@ -16,7 +16,7 @@ const skeletonLoader = (count = 1) => (
 export default function ChartFilters() {
   const { isInitialLoad } = useChartContext();
   return (
-    <div className="flex justify-between items-center gap-4">
+    <div className="flex justify-between items-center gap-4 mb-2">
       {isInitialLoad ? skeletonLoader(1) : <DailySpendChanger />}
       {isInitialLoad ? (
         <div className="flex gap-2 w-min">{skeletonLoader(3)}</div>

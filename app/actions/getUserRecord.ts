@@ -1,8 +1,9 @@
 "use server";
 import { db } from "@/lib/db";
+import { GetRecordsParams } from "@/types/Record";
 import { auth } from "@clerk/nextjs/server";
 
-async function getUserRecord(): Promise<{
+async function getUserRecord({ start, end, limit }: GetRecordsParams): Promise<{
   record?: number;
   daysWithRecords?: number;
   error?: string;
@@ -12,7 +13,8 @@ async function getUserRecord(): Promise<{
 
   try {
     const records = await db.record.findMany({
-      where: { userId },
+      where: { userId, date: { gte: start, lte: end } },
+      take: limit,
     });
 
     const record = records.reduce((sum, record) => sum + record.amount, 0);

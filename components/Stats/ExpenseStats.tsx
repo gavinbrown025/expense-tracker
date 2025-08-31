@@ -1,56 +1,59 @@
+import { Stats, ExpenseStatsProps,  } from "@/types/Chart";
+
 import UIIcon from "../UIIcon";
 import StatusBadge from "../StatusBadge";
 
-interface ExpenseStatsProps {
-  averageExpense: number;
-  bestExpense: number;
-  worstExpense: number;
-  validDays: number;
-}
-
 const ExpenseStats = ({
   averageExpense,
-  bestExpense,
-  worstExpense,
+  highestExpense,
+  lowestExpense,
   validDays,
 }: ExpenseStatsProps) => {
-  const stats = {
-    avg: averageExpense.toFixed(2),
-    best: bestExpense.toFixed(2),
-    worst: worstExpense.toFixed(2),
-  };
   const status = validDays > 0 ? "primary" : "warning";
   const badgeText =
     validDays > 1
       ? `${validDays} day${validDays === 1 ? "" : "s"} of data`
       : `No Valid Data`;
 
+  const stats: Stats = {
+    avg: {
+      iconName: "money_range",
+      label: "Average Expense",
+      value: averageExpense.toFixed(2),
+      trend: <StatusBadge text={badgeText} status={status} />,
+      styles: ["bg-accent/25", "text-accent", "text-accent font-bold text-sm"],
+    },
+    highest: {
+      iconName: "trending_up",
+      label: "Highest Expense",
+      value: highestExpense.toFixed(2),
+      trend: "↗︎ 400 (22%)",
+      styles: ["bg-error/25", "text-error", "text-base-content"],
+    },
+    lowest: {
+      iconName: "trending_down",
+      label: "Lowest Expense",
+      value: lowestExpense.toFixed(2),
+      trend: "↘︎ 90 (14%)",
+      styles: ["bg-primary/10", "text-primary", "text-base-content"],
+    },
+  };
+
   return (
-    <div className="stats stats-vertical @xl/card:stats-horizontal gradient-accent/20 shadow">
-      <div className="stat place-items-center gradient-base-300/20">
-        <UIIcon iconName="money_range" className="text-accent !text-4xl" />
-        <div className="stat-title font-bold text-accent text-sm">
-          Average Expense
+    <div className="stats stats-vertical @md/card:stats-horizontal gradient-accent/20 shadow">
+      {Object.entries(stats).map(([key, stat]) => (
+        <div key={key} className={`stat place-items-center ${stat.styles[0]} `}>
+          {/* <UIIcon
+            iconName={stat.iconName}
+            className={`${stat.styles[1]} !text-2xl`}
+          /> */}
+          <div className={`stat-title ${stat.styles[2]}`}>{stat.label}</div>
+          <div className="stat-value py-1 @lg/card:text-2xl @xl/card:text-3xl text-xl">
+            ${stat.value}
+          </div>
+          <div className={`stat-desc ${stat.styles[1]}`}>{stat.trend}</div>
         </div>
-        <div className="stat-value">${stats.avg}</div>
-        <div className="stat-desc">
-          <StatusBadge text={badgeText} status={status} />
-        </div>
-      </div>
-
-      <div className="stat place-items-center bg-accent/10">
-        <UIIcon iconName="trending_down" className="text-primary !text-4xl" />
-        <div className="stat-title">Lowest</div>
-        <div className="stat-value">${stats.worst}</div>
-        <div className="stat-desc">↗︎ 400 (22%)</div>
-      </div>
-
-      <div className="stat place-items-center bg-error/30">
-        <UIIcon iconName="trending_up" className="text-error !text-4xl" />
-        <div className="stat-title">Highest</div>
-        <div className="stat-value">${stats.best}</div>
-        <div className="stat-desc">↘︎ 90 (14%)</div>
-      </div>
+      ))}
     </div>
   );
 };

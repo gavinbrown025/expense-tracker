@@ -27,15 +27,7 @@ export default function AuthButton({
       </SignedOut>
       <SignedIn>
         <div className={inClass}>
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox:
-                  "rounded-full size-8 hover:scale-110 transition-transform duration-200",
-                userButtonBox: "flex items-center justify-center",
-              },
-            }}
-          />
+          <UserButton />
         </div>
       </SignedIn>
     </>

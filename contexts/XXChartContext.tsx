@@ -5,60 +5,52 @@ import {
   useContext,
   useState,
   useEffect,
-  useCallback,
-  useMemo,
   ReactNode,
 } from "react";
-import { Record } from "@/types/Record";
+
+import { getStoredValue, setStoredValue } from "@/lib/storage";
 import getRecords from "@/app/actions/getRecords";
+import { Record } from "@/types/Record";
+
+import getUserRecord from "@/app/actions/getUserRecord";
+import getBestWorstExpense from "@/app/actions/getBestWorstExpense";
 
 type ChartType = "Date" | "Category";
+type StoredDateRange = { start: string; end: string; label?: string };
 
-interface ChartContextValue {
+type ChartStats = {
+  averageExpense: number;
+  highestExpense: number;
+  lowestExpense: number;
+  validDays: number;
+} | null;
+
+type ChartContextType = {
   records: Record[];
-  chartType: ChartType;
+  isInitialLoad: boolean;
   error: string | null;
-  setChartType: (type: ChartType) => void;
-  filters: {
-    startDate?: Date;
-    endDate?: Date;
-    threshold: number;
-    label?: string;
-  };
-  setFilters: (
-    filters: Partial<{
-      startDate?: Date;
-      endDate?: Date;
-      threshold: number;
-      label?: string;
-    }>
-  ) => void;
-}
+  dateRange: StoredDateRange;
+  setDateRange: React.Dispatch<React.SetStateAction<StoredDateRange>>;
+  threshold: number;
+  setThreshold: React.Dispatch<React.SetStateAction<number>>;
+  chartType: ChartType;
+  setChartType: React.Dispatch<React.SetStateAction<ChartType>>;
+  refreshRecords: () => void;
+  stats: ChartStats;
+};
 
-// Utility to get initial date range from localStorage or default
-function getInitialDateRange() {
+const DEFAULT_DATE_RANGE = () => {
   const today = new Date();
-  let end = today;
-  let start = new Date(today);
+  const start = new Date(today);
   start.setDate(today.getDate() - 30);
-  let label = "Last 30 days";
-  if (typeof window !== "undefined") {
-    const stored = window.localStorage.getItem("dateRange");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (parsed.start && parsed.end) {
-          start = new Date(parsed.start);
-          end = new Date(parsed.end);
-          label = parsed.label || "Custom";
-        }
-      } catch {}
-    }
-  }
-  return { start, end, label };
-}
+  return {
+    start: start.toISOString(),
+    end: today.toISOString(),
+    label: "Last 30 days",
+  };
+};
 
-const ChartContext = createContext<ChartContextValue | undefined>(undefined);
+const ChartContext = createContext<ChartContextType | undefined>(undefined);
 
 export const useChartContext = () => {
   const context = useContext(ChartContext);
@@ -68,76 +60,103 @@ export const useChartContext = () => {
 };
 
 export const ChartProvider = ({ children }: { children: ReactNode }) => {
-  const initial = getInitialDateRange();
-  const [filters, setFiltersState] = useState({
-    startDate: initial.start,
-    endDate: initial.end,
-    threshold: 50, // default value, will update from localStorage in useEffect
-    label: initial.label,
-  });
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [records, setRecords] = useState<Record[]>([]);
-  const [chartType, setChartType] = useState<ChartType>("Date");
+  const [stats, setStats] = useState<ChartStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // On mount, update threshold from localStorage if available
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = window.localStorage.getItem("threshold");
-      if (stored) {
-        setFiltersState((prev) => ({ ...prev, threshold: Number(stored) }));
-      }
-    }
-  }, []);
-
-  // Fetch records automatically when filters change
-  useEffect(() => {
-    (async () => {
-      try {
-        const { records, error } = await getRecords({
-          startDate: filters.startDate,
-          endDate: filters.endDate,
-        });
-        if (error) {
-          setError(error);
-        } else if (records) {
-          setRecords(records);
-          setError(null);
-        }
-      } catch {
-        setError("Failed to fetch records");
-      }
-    })();
-  }, [filters.startDate, filters.endDate]);
-
-  // Persist threshold to localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(
-        "threshold",
-        JSON.stringify(filters.threshold)
-      );
-    }
-  }, [filters.threshold]);
-
-  // Setter for filters (partial update)
-  const setFilters = useCallback((newFilters: Partial<typeof filters>) => {
-    setFiltersState((prev) => ({ ...prev, ...newFilters }));
-  }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      records,
-      chartType,
-      setChartType,
-      filters,
-      setFilters,
-      error,
-    }),
-    [records, chartType, filters, setChartType, setFilters, error]
+  // Load persisted values or defaults
+  const [dateRange, setDateRange] = useState<StoredDateRange>(() =>
+    getStoredValue<StoredDateRange>("dateRange", DEFAULT_DATE_RANGE())
+  );
+  const [threshold, setThreshold] = useState<number>(() =>
+    getStoredValue<number>("threshold", 50)
+  );
+  const [chartType, setChartType] = useState<ChartType>(() =>
+    getStoredValue<ChartType>("chartType", "Date")
   );
 
+  // On mount, update state from localStorage if available
+  useEffect(() => {
+    const storedDateRange = getStoredValue<StoredDateRange>(
+      "dateRange",
+      DEFAULT_DATE_RANGE()
+    );
+    setDateRange(storedDateRange);
+
+    setThreshold(getStoredValue<number>("threshold", 50));
+    setChartType(getStoredValue<ChartType>("chartType", "Date"));
+  }, []);
+
+  // Persist state changes
+  useEffect(() => setStoredValue("dateRange", dateRange), [dateRange]);
+  useEffect(() => setStoredValue("threshold", threshold), [threshold]);
+  useEffect(() => setStoredValue("chartType", chartType), [chartType]);
+
+  const fetchStats = async () => {
+    try {
+      // Fetch both average and range data
+      const [userRecordResult, rangeResult] = await Promise.all([
+        getUserRecord(),
+        getBestWorstExpense(),
+      ]);
+
+      const { record, daysWithRecords } = userRecordResult;
+      const { highestExpense, lowestExpense } = rangeResult;
+
+      // Calculate average expense
+      const validRecord = record || 0;
+      const validDays = daysWithRecords || 0;
+      const averageExpense = validRecord / validDays;
+
+      setStats({ averageExpense, highestExpense, lowestExpense, validDays });
+    } catch (error) {
+      console.error("Error fetching expense data:", error);
+      return setError("Failed to fetch stats");
+    }
+  };
+
+  const fetchRecords = async () => {
+    try {
+      const { records, error } = await getRecords({
+        startDate: new Date(dateRange.start),
+        endDate: new Date(dateRange.end),
+      });
+      if (error) setError(error);
+      else setRecords(records ?? []);
+    } catch {
+      setError("Failed to fetch records");
+    }
+  };
+
+  // Fetch records when dateRange changes
+  useEffect(() => {
+    if (isInitialLoad) {
+      fetchRecords().then(() => fetchStats()).then(() => setIsInitialLoad(false));
+    } else {
+      fetchRecords();
+      fetchStats();
+    }
+  }, [dateRange]);
+
+  const refreshRecords = () => fetchRecords();
+
   return (
-    <ChartContext.Provider value={contextValue}>
+    <ChartContext.Provider
+      value={{
+        records,
+        error,
+        dateRange,
+        setDateRange,
+        threshold,
+        setThreshold,
+        chartType,
+        setChartType,
+        refreshRecords,
+        isInitialLoad,
+        stats,
+      }}
+    >
       {children}
     </ChartContext.Provider>
   );

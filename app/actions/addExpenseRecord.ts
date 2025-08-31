@@ -4,17 +4,7 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 
-interface RecordData {
-  amount: number;
-  text: string;
-  category: string;
-  date: string;
-}
-
-interface RecordResult {
-  data?: object;
-  error?: string;
-}
+import { RecordResult, RecordData } from "@/types/Record";
 
 async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
   // Validate form data

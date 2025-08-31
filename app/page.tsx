@@ -6,6 +6,7 @@ import WelcomeCard from "@/components/WelcomeCard";
 import AddNewRecord from "@/components/AddNewRecord";
 import RecordChart from "@/components/Charts/RecordChart";
 import ExpenseStatsCard from "@/components/Stats/ExpenseStatsCard";
+import AIInsights from "@/components/Insights/AIInsights";
 
 export default async function HomePage() {
   const user = await currentUser();
@@ -22,8 +23,12 @@ export default async function HomePage() {
               <AddNewRecord />
             </div>
             <div className="space-y-6">
+              {/* <ExpenseStatsCard /> */}
               <RecordChart />
-              <ExpenseStatsCard />
+            </div>
+
+            <div className="col-span-full">
+              <AIInsights />
             </div>
           </div>
         </ChartProvider>
