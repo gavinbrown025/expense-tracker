@@ -10,7 +10,7 @@ export default function Dashboard({ user }: { user: User }) {
   return (
     <ChartProvider>
       <div className="container-x py-8">
-        <div className="grid gap-4 lg:grid-cols-2 md:gap-6">
+        <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-6">
             <WelcomeCard user={user} />
             <AddNewRecord />

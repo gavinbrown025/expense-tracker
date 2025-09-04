@@ -22,11 +22,11 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-neutral shadow-md shadow-base-900/5">
+    <nav className="sticky top-0 z-50 bg-neutral shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo Section */}
-          <div className="flex items-center">
+          <div className="flex flex-grow items-center">
             <Link
               href="/"
               className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group transition-all duration-300 hover:scale-105"

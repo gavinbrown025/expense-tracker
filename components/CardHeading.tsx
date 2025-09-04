@@ -16,7 +16,7 @@ export default function CardHeading({
 }: CardHeadingProps) {
   return (
     <div className="flex items-center gap-4 mb-6">
-      {iconName && <UICircleIcon iconName={iconName} />}
+      {iconName && <UICircleIcon className="gradient-primary/100" iconName={iconName} />}
       <div className="flex-grow order">
         <h2 className="card-title text-lg @md/card:text-xl @lg/card:text-2xl">
           {title}
