@@ -52,7 +52,7 @@ export default function RootLayout({
       <ClerkProvider appearance={appearance}>
         <html lang="en">
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased bg-base-100`}
           >
             <NavBar />
             <main className="min-h-[80vh]">{children}</main>

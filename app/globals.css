@@ -86,34 +86,203 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-@layer utilities {
-  .container-x {
-    @apply w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8;
+@utility text-dynamic-xs-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-xs), var(--max));
+  @variant sm {
+    font-size: min(var(--text-sm), var(--max));
   }
-  .container-y {
-    @apply py-12 sm:py-14 lg:py-16;
+  @variant md {
+    font-size: min(var(--text-base), var(--max));
   }
-  .gradient-line {
-    @apply bg-gradient-to-r from-primary to-accent;
+  @variant lg {
+    font-size: min(var(--text-lg), var(--max));
   }
-  .gradient-text {
-    @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
+  @variant xl {
+    font-size: min(var(--text-xl), var(--max));
   }
+}
+@utility text-dynamic-sm-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-sm), var(--max));
+  @variant sm {
+    font-size: min(var(--text-base), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-lg), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-2xl), var(--max));
+  }
+}
+@utility text-dynamic-base-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-base), var(--max));
+  @variant sm {
+    font-size: min(var(--text-lg), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-2xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-3xl), var(--max));
+  }
+}
+@utility text-dynamic-lg-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-lg), var(--max));
+  @variant sm {
+    font-size: min(var(--text-xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-2xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-3xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-4xl), var(--max));
+  }
+}
+@utility text-dynamic-xl-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-xl), var(--max));
+  @variant sm {
+    font-size: min(var(--text-2xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-3xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-4xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-5xl), var(--max));
+  }
+}
+@utility text-dynamic-2xl-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-2xl), var(--max));
+  @variant sm {
+    font-size: min(var(--text-3xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-4xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-5xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-6xl), var(--max));
+  }
+}
+
+@utility text-dynamic-3xl-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-3xl), var(--max));
+  @variant sm {
+    font-size: min(var(--text-4xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-5xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-6xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-7xl), var(--max));
+  }
+}
+@utility text-dynamic-4xl-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-4xl), var(--max));
+  @variant sm {
+    font-size: min(var(--text-5xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-6xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-7xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-8xl), var(--max));
+  }
+}
+@utility text-dynamic-5xl-* {
+  --m: --value(--text- *);
+  --max: var(--m, var(--text-9xl));
+  font-size: min(var(--text-5xl), var(--max));
+  @variant sm {
+    font-size: min(var(--text-6xl), var(--max));
+  }
+  @variant md {
+    font-size: min(var(--text-7xl), var(--max));
+  }
+  @variant lg {
+    font-size: min(var(--text-8xl), var(--max));
+  }
+  @variant xl {
+    font-size: min(var(--text-9xl), var(--max));
+  }
+}
+
+@utility container-x {
+  @apply w-full max-w-[1440px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-20;
 }
 
 @utility gradient-* {
   --n: --value(--color- *);
   --op: calc(--modifier(integer) * 1%);
 
-  --to: color-mix(in oklch, var(--n), var(--color-neutral) 50%);
+  --to: color-mix(in oklch, var(--n), var(--color-neutral) 20%);
   --from-a: --alpha(var(--n) / var(--op, 100%));
   --to-a: --alpha(var(--to) / var(--op, 100%));
 
   background-image: linear-gradient(
     to bottom right,
     var(--from-a),
-    var(--to-a)
+    var(--to-a),
+    var(--from-a)
   );
+}
+
+@utility gradient-text-* {
+  --n: --value(--color- *);
+  --op: calc(--modifier(integer) * 1%);
+
+  --to: color-mix(in oklch, var(--n), var(--color-neutral) 50%);
+  --from-a: --alpha(var(--n) / var(--op, 100%));
+  --to-a: --alpha(var(--to) / var(--op, 100%));
+  background-image: linear-gradient(
+    to bottom right,
+    var(--from-a),
+    var(--to-a),
+    var(--from-a)
+  );
+  @apply bg-clip-text text-transparent;
+}
+
+@utility gradient-text {
+  @apply gradient-primary/100 bg-clip-text text-transparent;
+}
+
+@utility hover-lift {
+  @apply transform transition duration-200 hover:-translate-y-1 hover:shadow-2xl;
 }
 
 .material-symbols-outlined {
