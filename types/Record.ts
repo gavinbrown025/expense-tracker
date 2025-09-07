@@ -21,7 +21,7 @@ export interface RecordResult {
 }
 
 export interface GetRecordsParams {
-  start: Date;
-  end: Date;
+  start?: Date;
+  end?: Date;
   limit?: number;
 }

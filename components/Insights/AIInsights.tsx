@@ -194,7 +194,7 @@ const AIInsights = () => {
   const LoadingCard = () => {
     return (
       <>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 @lg/card:grid-cols-2 gap-3 sm:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="skeleton card card-sm opacity-50">
               <div className="card-body">
@@ -237,7 +237,7 @@ const AIInsights = () => {
   const FullCard = () => {
     return (
       <>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 @lg/card:grid-cols-2 gap-3 sm:gap-4">
           {insights.map((insight) => {
             const currentAnswer = aiAnswers.find(
               (a) => a.insightId === insight.id

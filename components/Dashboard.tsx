@@ -5,6 +5,7 @@ import WelcomeCard from "@/components/WelcomeCard";
 import AddNewRecord from "@/components/AddNewRecord";
 import RecordChart from "@/components/Charts/RecordChart";
 import AIInsights from "@/components/Insights/AIInsights";
+import HistoryCard from "@/components/History/HistoryCard";
 
 export default function Dashboard({ user }: { user: User }) {
   return (
@@ -14,12 +15,11 @@ export default function Dashboard({ user }: { user: User }) {
           <div className="space-y-6">
             <WelcomeCard user={user} />
             <AddNewRecord />
+            <AIInsights />
           </div>
           <div className="space-y-6">
             <RecordChart />
-          </div>
-          <div className="col-span-full">
-            <AIInsights />
+            <HistoryCard />
           </div>
         </div>
       </div>

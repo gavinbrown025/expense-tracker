@@ -12,9 +12,12 @@ export default async function getRecords({
   const { userId } = await auth();
   if (!userId) return { error: "User not found" };
 
+  // get all if no date
+  const date = start && end ? { gte: start, lte: end } : undefined;
+
   try {
     const records = await db.record.findMany({
-      where: { userId, date: { gte: start, lte: end } },
+      where: { userId, date },
       orderBy: { date: "desc" },
       take: limit,
     });
