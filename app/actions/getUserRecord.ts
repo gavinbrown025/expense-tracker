@@ -1,0 +1,34 @@
+"use server";
+import { db } from "@/lib/db";
+import { GetRecordsParams } from "@/types/Record";
+import { auth } from "@clerk/nextjs/server";
+
+async function getUserRecord({ start, end, limit }: GetRecordsParams): Promise<{
+  record?: number;
+  daysWithRecords?: number;
+  error?: string;
+}> {
+  const { userId } = await auth();
+  if (!userId) return { error: "User not found" };
+
+  try {
+    const records = await db.record.findMany({
+      where: { userId, date: { gte: start, lte: end } },
+      take: limit,
+    });
+
+    const record = records.reduce((sum, record) => sum + record.amount, 0);
+
+    // Count the number of days with valid sleep records
+    const daysWithRecords = records.filter(
+      (record) => record.amount > 0
+    ).length;
+
+    return { record, daysWithRecords };
+  } catch (error) {
+    console.error("Error fetching user record:", error); // Log the error
+    return { error: "Database error" };
+  }
+}
+
+export default getUserRecord;
