@@ -242,7 +242,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 @utility container-x {
-  @apply w-full max-w-[1440px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-20;
+  @apply w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20;
 }
 
 @utility gradient-* {
