@@ -11,7 +11,7 @@ export default function UICircleIcon({
 }) {
   return (
     <div
-      className={`grid place-items-center size-10 @lg/card:size-12 rounded-full border-0 cursor-default order ${className}`}
+      className={`grid place-items-center size-10 @lg/card:size-12 shrink-0 rounded-full border-0 cursor-default order ${className}`}
     >
       <UIIcon iconName={iconName} className={`!text-white ${iconClass}`} />
     </div>

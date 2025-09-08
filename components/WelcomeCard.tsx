@@ -9,7 +9,7 @@ export default function WelcomeCard({ user }: { user: User }) {
     <Card
       title={`Welcome, ${user.firstName}!`}
       desc="Here's a quick overview of your recent expense activity. Track your spending, analyze patterns, and manage your budget efficiently!"
-      headingChildren={<Avatar className="w-18 sm:w-20 text-2xl" user={user} />}
+      headingChildren={<Avatar className="w-12 text-lg @sm/card:w-16 @sm/card:text-xl" user={user} />}
     >
       <div className="card-actions">
         <div className="badge badge-outline border-accent">

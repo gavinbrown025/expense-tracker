@@ -90,7 +90,7 @@ const DateRangeSelector = () => {
     };
 
   return (
-    <div className="flex gap-2">
+    <>
       {/* Preset buttons */}
       <div className="w-min flex-col justify-stretch">
         <label className="label text-xs" htmlFor="range">
@@ -149,7 +149,7 @@ const DateRangeSelector = () => {
           }}
         />
       </div>
-    </div>
+    </>
   );
 };
 
