@@ -1,5 +1,4 @@
 "use client";
-
 import ThemeToggle from "@/components/ThemeToggle";
 import MenuButton from "@/components/MenuButton";
 import MobileMenu from "@/components/MobileMenu";
@@ -8,14 +7,19 @@ import AuthButton from "@/components/AuthButton";
 
 import Link from "next/link";
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const links = [
+    ...(isSignedIn
+      ? [{ href: "/dashboard", label: "Dashboard", icon: "dashboard" }]
+      : []),
     { href: "/", label: "Home", icon: "home" },
     { href: "/about", label: "About", icon: "info" },
     { href: "/contact", label: "Contact", icon: "phone_enabled" },
@@ -47,6 +51,7 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-1">
             {links.map((link) => (
+              // make dashboard link hidden if user is not signed in
               <Link
                 key={link.href}
                 href={link.href}
@@ -65,7 +70,7 @@ export default function Navbar() {
               onClick={toggleMobileMenu}
               mobileMenuOpen={isMobileMenuOpen}
             />
-            <AuthButton outClass="not-sm:hidden"/>
+            <AuthButton outClass="not-sm:hidden" />
           </div>
         </div>
 
