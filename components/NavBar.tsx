@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Logo Section */}
           <div className="flex flex-grow items-center">
             <Link
-              href="/"
+              href={isSignedIn ? "/dashboard" : "/"}
               className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group transition-all duration-300 hover:scale-105"
               onClick={closeMobileMenu}
             >
